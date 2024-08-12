@@ -53,7 +53,7 @@ export default async function handler(
     if (!channel) {
       return res.status(404).json({ error: "channel not found" });
     }
-
+    //me
     const member = server.members.find(
       (member) => member.profileId === profile.id
     );
@@ -69,7 +69,7 @@ export default async function handler(
       },
       include: {
         member: {
-          include: { profile: true },
+          include: { profile: true }, //member corresponding to message
         },
       },
     });
@@ -77,10 +77,10 @@ export default async function handler(
       return res.status(404).json({ error: "message not found" });
     }
 
-    const isMessageOwner = message.memberId === member.id;
-    const isAdmin = member.role === MemberRole.ADMIN;
-    const isModerator = member.role === MemberRole.MODERATOR;
-    const canModify = isMessageOwner || isAdmin || isModerator;
+    const isMessageOwner = message.memberId === member.id; //if we are the owner
+    const isAdmin = member.role === MemberRole.ADMIN; //if we are the admin
+    const isModerator = member.role === MemberRole.MODERATOR; //if we are the moderator
+    const canModify = isMessageOwner || isAdmin || isModerator; //if we have the ability to modify
 
     if (!canModify) {
       return res.status(401).json({ error: "Unautharized" });
